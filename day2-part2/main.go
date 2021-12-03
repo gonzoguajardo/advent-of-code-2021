@@ -20,18 +20,23 @@ func main() {
 
 	var horizontal int
 	var depth int
+	var aim int
 
 	for scanner.Scan() {
 		//fmt.Println(scanner.Text())
 		currentLine := scanner.Text()
 		split := strings.Split(currentLine, " ")
 		value, _ := strconv.Atoi(split[1])
+
 		if split[0] == "forward" {
 			horizontal += value
+			depth = depth + (value * aim)
 		} else if split[0] == "down" {
-			depth += value
+			aim += value
+			//depth += value
 		} else if split[0] == "up" {
-			depth -= value
+			aim -= value
+			//depth -= value
 		}
 
 		//break
