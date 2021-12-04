@@ -32,7 +32,7 @@ func main() {
 				counts[index] = [2]int{0, 0}
 				first = false
 			}
-			if char == 48 {
+			if char == 48 { //zero
 				counts[index][0]++
 			} else {
 				counts[index][1]++
