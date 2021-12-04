@@ -25,17 +25,23 @@ func main() {
 	//fmt.Println(input)
 
 	// and then we need to loop through twice since the filtering is different? meh, there is probably a better way...
+	o2Value := reduceToValue(input, true)
+	co2Value := reduceToValue(input, false)
+	fmt.Println(o2Value * co2Value)
 
-	o2 := make([]string, len(input))
-	copy(o2, input)
+}
+
+func reduceToValue(input []string, favorOne bool) int64 {
+	filteredSlice := make([]string, len(input))
+	copy(filteredSlice, input)
 	var currentIndex int
-	for len(o2) > 1 {
+	for len(filteredSlice) > 1 {
 		var zeroCount int
 		var oneCount int
 		var zeroArray []string
 		var oneArray []string
 
-		for _, currentString := range o2 {
+		for _, currentString := range filteredSlice {
 			if currentString[currentIndex] == 48 { //zero
 				zeroCount++
 				zeroArray = append(zeroArray, currentString)
@@ -45,50 +51,26 @@ func main() {
 			}
 		}
 
-		if oneCount >= zeroCount {
-			o2 = make([]string, len(oneArray))
-			copy(o2, oneArray)
-		} else {
-			o2 = make([]string, len(zeroArray))
-			copy(o2, zeroArray)
-		}
-
-		currentIndex++
-	}
-
-	// yes, you should move this to a method but meh lazzy
-	co2 := make([]string, len(input))
-	copy(co2, input)
-	currentIndex = 0
-	for len(co2) > 1 {
-		var zeroCount int
-		var oneCount int
-		var zeroArray []string
-		var oneArray []string
-
-		for _, currentString := range co2 {
-			if currentString[currentIndex] == 48 { //zero
-				zeroCount++
-				zeroArray = append(zeroArray, currentString)
+		if favorOne {
+			if oneCount >= zeroCount {
+				filteredSlice = make([]string, len(oneArray))
+				copy(filteredSlice, oneArray)
 			} else {
-				oneCount++
-				oneArray = append(oneArray, currentString)
+				filteredSlice = make([]string, len(zeroArray))
+				copy(filteredSlice, zeroArray)
+			}
+		} else {
+			if oneCount < zeroCount {
+				filteredSlice = make([]string, len(oneArray))
+				copy(filteredSlice, oneArray)
+			} else {
+				filteredSlice = make([]string, len(zeroArray))
+				copy(filteredSlice, zeroArray)
 			}
 		}
 
-		if oneCount < zeroCount {
-			co2 = make([]string, len(oneArray))
-			copy(co2, oneArray)
-		} else {
-			co2 = make([]string, len(zeroArray))
-			copy(co2, zeroArray)
-		}
-
 		currentIndex++
 	}
-
-	o2value, _ := strconv.ParseInt(o2[0], 2, 64)
-	co2value, _ := strconv.ParseInt(co2[0], 2, 64)
-	fmt.Println(o2value * co2value)
-
+	value, _ := strconv.ParseInt(filteredSlice[0], 2, 64)
+	return value
 }
