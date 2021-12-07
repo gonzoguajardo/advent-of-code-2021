@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	file, err := os.Open("day7-part1/input.txt")
+	file, err := os.Open("day7-part2/input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -30,28 +30,41 @@ func main() {
 			crabs[index]++
 		}
 	}
+	//fmt.Println(crabs)
 
 	dp := make([][2]int, len(crabs))
 	//left side
-	var leftCount int
 	var leftSum int
+	var leftPositions [][2]int //[pos, count]
 	for i := 1; i < len(crabs); i++ {
-		leftCount += crabs[i-1]
-		leftSum += leftCount
+		var currentLeftSum int
+		if crabs[i-1] > 0 {
+			leftPositions = append(leftPositions, [2]int{i - 1, crabs[i-1]})
+		}
+		for _, position := range leftPositions {
+			currentLeftSum += position[1] * (i - position[0])
+		}
+		leftSum += currentLeftSum
 		dp[i][0] = leftSum
 		//fmt.Printf("i: %v\n", i)
-		//fmt.Printf("leftCount: %v\n", leftCount)
+		//fmt.Printf("currentLeftSum: %v\n", currentLeftSum)
 		//fmt.Printf("leftSum: %v\n", leftSum)
 	}
 	//right side
-	var rightCount int
 	var rightSum int
+	var rightPositions [][2]int //[pos, count]
 	for i := len(crabs) - 2; i >= 0; i-- {
-		rightCount += crabs[i+1]
-		rightSum += rightCount
+		var currentRightSum int
+		if crabs[i+1] > 0 {
+			rightPositions = append(rightPositions, [2]int{i + 1, crabs[i+1]})
+		}
+		for _, position := range rightPositions {
+			currentRightSum += position[1] * (position[0] - i)
+		}
+		rightSum += currentRightSum
 		dp[i][1] = rightSum
 		//fmt.Printf("i: %v\n", i)
-		//fmt.Printf("rightCount: %v\n", rightCount)
+		//fmt.Printf("currentRightSum: %v\n", currentRightSum)
 		//fmt.Printf("rightSum: %v\n", rightSum)
 	}
 	minSum := math.MaxInt
