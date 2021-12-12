@@ -28,13 +28,13 @@ func main() {
 		//fmt.Println(text)
 	}
 
-	//fmt.Println("Before any steps: ")
-	//ocean.print()
+	fmt.Println("Before any steps: ")
+	ocean.print()
 	count := 0
 	maxStep := 100
 	for step := 1; step <= maxStep; step++ {
 		count += ocean.step()
-		//fmt.Println("After step ", step)
+		fmt.Println("After step ", step)
 		//ocean.print()
 	}
 	println("count: ", count)
