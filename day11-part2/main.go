@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	file, err := os.Open("day11-part1/input.txt")
+	file, err := os.Open("day11-part2/input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -28,16 +28,21 @@ func main() {
 		//fmt.Println(text)
 	}
 
-	fmt.Println("Before any steps: ")
-	ocean.print()
+	expectedCount := len(ocean.matrix) * len(ocean.matrix[0])
+
+	//fmt.Println("Before any steps: ")
+	//ocean.print()
 	count := 0
-	maxStep := 100
-	for step := 1; step <= maxStep; step++ {
-		count += ocean.step()
-		fmt.Println("After step ", step)
-		//ocean.print()
+	step := 1
+	for count != expectedCount {
+		count = ocean.step()
+		if step == 1 {
+			fmt.Println("after step: ", step)
+			ocean.print()
+		}
+		step++
 	}
-	println("count: ", count)
+	println("step: ", step-1)
 
 }
 
